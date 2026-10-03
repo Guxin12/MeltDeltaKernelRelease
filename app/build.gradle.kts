@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.nemo.updater"
-    compileSdk = 37
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.nemo.updater"
         minSdk = 33
-        targetSdk = 37
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
 
