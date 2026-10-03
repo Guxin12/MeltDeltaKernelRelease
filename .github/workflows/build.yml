@@ -5,7 +5,7 @@ on:
     branches: [ master, main ]
   pull_request:
     branches: [ master, main ]
-  workflow_dispatch:          # 允许手动触发
+  workflow_dispatch:
   release:
     types: [ published ]
 
@@ -25,14 +25,11 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # 关键：packages 必须空格分隔写在一行；升级到 v4，避免废弃的 tools 包
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
         with:
-          packages: |
-            cmdline-tools;latest
-            platform-tools
-            build-tools;35.0.0
-            platforms;android-35
+          packages: platform-tools build-tools;35.0.0 platforms;android-35
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -57,7 +54,6 @@ jobs:
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: error
 
-      # 如果是打 tag / 发布 Release，自动把 APK 挂到 GitHub Release
       - name: Upload to GitHub Release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
